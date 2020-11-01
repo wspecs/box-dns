@@ -17,11 +17,15 @@ source /etc/wspecs/functions.sh
 # * ldnsutils: Helper utilities for signing DNSSEC zones.
 # * openssh-client: Provides ssh-keyscan which we use to create SSHFP records.
 echo "Installing nsd (DNS server)..."
-apt_install nsd ldnsutils openssh-client
+apt_install ldnsutils openssh-client
 
 # Prepare nsd's configuration.
 
 mkdir -p /var/run/nsd
+mkdir -p /etc/nsd		
+mkdir -p /etc/nsd/zones		
+touch /etc/nsd/zones.conf		
+touch /etc/nsd/nsd.conf
 
 cat > /etc/nsd/nsd.conf << EOF
 # Do not edit. Overwritten by wspecsbox setup.
@@ -64,6 +68,9 @@ for ip in $PRIVATE_IP $PRIVATE_IPV6; do
 done
 
 echo "include: /etc/nsd/zones.conf" >> /etc/nsd/nsd.conf;
+
+# Attempting a late install of nsd (after configuration)		
+apt_install nsd
 
 # Create DNSSEC signing keys.
 
@@ -147,5 +154,4 @@ chmod +x /etc/cron.daily/wspecsbox-dnssec
 # Permit DNS queries on TCP/UDP in the firewall.
 
 ufw_allow domain
-
 
