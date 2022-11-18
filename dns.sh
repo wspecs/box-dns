@@ -147,7 +147,7 @@ cat > /etc/cron.daily/wspecsbox-dnssec << EOF
 #!/bin/bash
 # wspecsbox
 # Re-sign any DNS zones with DNSSEC because the signatures expire periodically.
-/usr/local/lib/wspecsbox/management/tools/dns_update
+/usr/local/lib/wspecsbox/management/dns_update.py
 EOF
 chmod +x /etc/cron.daily/wspecsbox-dnssec
 
